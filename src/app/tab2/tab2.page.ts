@@ -56,7 +56,11 @@ export class Tab2Page {
       this.senhasService.senhasAtendidasENaoAtendidas = [];
     } else {
       if (horasRestantes == 1) {
-        alert(`Ainda não é 17h. Faltam ${minutosRestantes} minutos`)
+        if (minutosRestantes == 1) {
+          alert(`Ainda não é 17h. Falta ${minutosRestantes} minuto`)
+        } else {
+          alert(`Ainda não é 17h. Faltam ${minutosRestantes} minutos`)
+        }
       } else {
         alert(`Ainda não é 17h. Faltam ${horasRestantes} horas`)
       }
