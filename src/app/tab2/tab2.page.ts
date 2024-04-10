@@ -29,14 +29,17 @@ export class Tab2Page {
   reiniciarSistema() {
     let dataAtual: Date = new Date();
     let hours: number | string = dataAtual.getHours();
+    let minutes: number | string = dataAtual.getMinutes();
     let horasRestantes = 0
+    let minutosRestantes = 60 - minutes;
     if (hours > 17) {
       horasRestantes = hours - 17
     } else {
       horasRestantes = 17 - hours
     }
     hours = hours < 10 ? '0' + hours : hours;
-  
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+
     if (hours > "17") {
       this.senhasService.senhas = []
       this.senhasService.senhasGeral = 0;
@@ -53,7 +56,7 @@ export class Tab2Page {
       this.senhasService.senhasAtendidasENaoAtendidas = [];
     } else {
       if (horasRestantes == 1) {
-        alert(`Ainda não é 17h. Falta ${horasRestantes} hora`)
+        alert(`Ainda não é 17h. Faltam ${minutosRestantes} minutos`)
       } else {
         alert(`Ainda não é 17h. Faltam ${horasRestantes} horas`)
       }
