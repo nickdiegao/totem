@@ -3,6 +3,14 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SenhasService {
+  public senhas: any[] = [];
+
+  // adicionarSenha(senha: any) {
+  //   if (this.senhas.length >= 5) {
+  //     return; 
+  //   }
+  //   this.senhas.unshift(senha);
+  // }
   constructor() {}
   
   public DataAtual: Date = new Date();
@@ -19,8 +27,6 @@ export class SenhasService {
   somaPrior() {this.senhasPrior++; this.senhasTotal++; this.count2++}
   somaExame() {this.senhasExame++; this.senhasTotal++; this.count1++}
 
-  public senhas: any[] = [];
-
   getFormattedDate(): string {
     let currentDate: Date = new Date();
     let day: number | string = currentDate.getDate();
@@ -32,6 +38,17 @@ export class SenhasService {
     year = year < 10 ? '0' + year : year;
 
     return `${day}/${month}/${year}`;
+  }
+
+  getOnlyHours(): string {
+    let dataAtual = new Date();
+    let hours: number | string = dataAtual.getHours();
+    let minutes: number | string = dataAtual.getMinutes();
+
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+
+    return `${hours}:${minutes}`;
   }
 
   gerarMinutosNovos(): string {
@@ -139,9 +156,27 @@ export class SenhasService {
     return `${day}/${month}/${year} ${hours}:${minutes}`;
   }
 
-  getSGIndex(): number {
-    return this.senhas.findIndex(senha => senha.senha.includes('SG'));
+  guicheResponsavel() {
+    const min = 1;
+    const max = 5;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+  
+  getSGIndex(): number {
+    const index = this.senhas.findIndex(senha => senha && senha.senha && senha.senha.includes('SG'));
+    return index !== -1 ? index : -1;
+  }
+  
+  getSEIndex(): number {
+    const index = this.senhas.findIndex(senha => senha.senha.includes('SE'));
+    return index !== -1 ? index : -1;
+  }
+
+  getPPIndex(): number {
+    return this.senhas.findIndex(senha => senha.senha.includes('PP'));
+  }
+
+  public senhasAtendidasENaoAtendidas: any[] = [];
   
   senhaSE() {
     let newSenha = {
@@ -149,6 +184,12 @@ export class SenhasService {
         icon: 'newspaper',
         senha: `${this.getFormattedDate()}-SE${this.count1}`, 
         timestamp: `${this.gerarMinutosNovosSE()}`, 
+        tipo: 'Senha Exame',
+        dataEmissao: `${this.getFormattedDate()}`,
+        horaEmissao: `${this.getOnlyHours()}`,
+        dataAtendimento: `${this.getFormattedDate()}`,
+        horaAtendimento: `${this.getOnlyHours()}`,
+        guicheResponsavel: `${this.guicheResponsavel()}`
     };
 
     let sgIndex = this.getSGIndex();
@@ -158,11 +199,10 @@ export class SenhasService {
     } else {
         this.senhas.push(newSenha);
     }
+    
+    this.senhasAtendidasENaoAtendidas.push(newSenha);
   }
 
-  getSEIndex(): number {
-    return this.senhas.findIndex(senha => senha.senha.includes('SE'));
-  }
 
   senhaSP() {
     let newSenha = {
@@ -170,6 +210,12 @@ export class SenhasService {
       icon: 'accessibility',
       senha: `${this.getFormattedDate()}-PP${this.count2}`, 
       timestamp: `${this.gerarMinutosNovosPP()}`, 
+      tipo: 'Senha Prioritária',
+      dataEmissao: `${this.getFormattedDate()}`,
+      horaEmissao: `${this.getOnlyHours()}`,
+      dataAtendimento: `${this.getFormattedDate()}`,
+      horaAtendimento: `${this.getOnlyHours()}`,    
+      guicheResponsavel: `${this.guicheResponsavel()}`
     };
 
     let seIndex = this.getSEIndex();
@@ -182,7 +228,8 @@ export class SenhasService {
     } else {
       this.senhas.push(newSenha);
     }
-    
+
+    this.senhasAtendidasENaoAtendidas.push(newSenha);
   }
 
   senhaSG() {
@@ -191,9 +238,77 @@ export class SenhasService {
       icon: 'eyedrop',
       senha: `${this.getFormattedDate()}-SG${this.count3}`,
       timestamp: `${this.gerarMinutosNovosSG()}`, 
+      tipo: 'Senha Geral',
+      dataEmissao: `${this.getFormattedDate()}`,
+      horaEmissao: `${this.getOnlyHours()}`,
+      dataAtendimento: `${this.getFormattedDate()}`,
+      horaAtendimento: `${this.getOnlyHours()}`,
+      guicheResponsavel: `${this.guicheResponsavel()}`
     };
 
     this.senhas.push(newSenha);
+    this.senhasAtendidasENaoAtendidas.push(newSenha);
+  }
+
+  public senhasAtendidas: any[] = [];
+  public contadorDeSenhasAtendidas: number = 0;
+
+  atenderSenha() {
+    this.senhasAtendidas.push(this.senhas)
+    // for (let index = 0; index < this.senhasAtendidas.length; index++) {
+    //   const element = this.senhasAtendidas[index];
+    //   console.log(element)
+    // }
+    this.senhas.shift()
+    this.contadorDeSenhasAtendidas++
+    // console.log(this.contadorDeSenhasAtendidas)
+  }
+
+  public contadorDeSenhasNaoAtendidas: number = 0;
+
+  senhasNaoChamadas() {
+    this.contadorDeSenhasNaoAtendidas++
+    this.senhas.shift()
+  }
+
+  public senhaPPatendida: number = 0;
+  public senhaSEatendida: number = 0;
+  public senhaSGatendida: number = 0;
+
+  atenderSenhaPP() {
+    this.senhaPPatendida++
+  }
+
+  atenderSenhaSE() {
+    this.senhaSEatendida++
+  }
+
+  atenderSenhaSG() {
+    this.senhaSGatendida++
+  }
+
+  gerarRelatorioDetalhado(senhasAtendidasENaoAtendidas: any[]): any[] {
+    let relatorio: any[] = [];
+    
+    for (let senha of senhasAtendidasENaoAtendidas) {
+
+      let atendimento = senha.dataAtendimento ? senha.dataAtendimento : '';
+      let guiche = senha.guicheResponsavel ? senha.guicheResponsavel : '';
+
+        let detalhes = {
+            numeracao: senha.senha,
+            tipo: senha.tipo,
+            dataEmissão: senha.dataEmissao,
+            horaEmissão: senha.horaEmissao,
+            dataAtendimento: atendimento ? atendimento.data : '',
+            horaAtendimento: atendimento ? atendimento.hora : '',
+            guicheResponsável: guiche
+        };
+
+        relatorio.push(detalhes);
+    }
+
+    return relatorio;
   }
 
 }

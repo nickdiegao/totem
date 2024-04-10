@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Relatório
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,17 +13,42 @@
     </ion-toolbar>
   </ion-header>
 
-  <!-- <app-explore-container name="Tab 3 page"></app-explore-container> -->
-
   <ion-card>
     <ion-card-content>
+
       <ion-list>
-        <ion-label>Relatório</ion-label>
-        <ion-item>Senhas emitidas: {{senhasService.senhasTotal}}</ion-item>
-        <ion-item>Senhas Exame: {{senhasService.senhasExame}}</ion-item>
-        <ion-item>Senhas Prioritárias: {{senhasService.senhasPrior}}</ion-item>
-        <ion-item>Senhas Geral: {{senhasService.senhasGeral}}</ion-item>
-        <ion-item>Tempo Médio: {{senhasService.gerarMinutosNovos()}}</ion-item>
+        <ion-item>Senhas emitidas: {{ senhasService.senhasTotal }}</ion-item>
+        <ion-item>Total de senhas atendidas: {{ senhasService.contadorDeSenhasAtendidas }}</ion-item>
+      </ion-list>
+
+      <div style="height: 200px; border: 3px solid white; margin-top: 6px; border-radius: 5px;">
+        <ion-item>Quantitativo de senhas emitidas por prioridade:</ion-item>
+        <ion-item>Senhas Prioritárias: {{ senhasService.senhasPrior }}</ion-item>
+        <ion-item>Senhas Exame: {{ senhasService.senhasExame }}</ion-item>
+        <ion-item>Senhas Geral: {{ senhasService.senhasGeral }}</ion-item>
+      </div>
+
+      <div style="height: 200px; border: 3px solid white; margin-top: 6px; border-radius: 5px;">
+        <ion-item>Quantitativo de senhas atendidas por prioridade:</ion-item>
+        <ion-item>Senhas Prioritárias: {{ senhasService.senhaPPatendida }}</ion-item>
+        <ion-item>Senhas Exame: {{ senhasService.senhaSEatendida }}</ion-item>
+        <ion-item>Senhas Geral: {{ senhasService.senhaSGatendida }}</ion-item>
+      </div>
+
+      <!-- Aqui você precisa calcular o tempo médio com base nos horários de emissão e atendimento -->
+      <!-- <ion-item>Tempo Médio: {{ tempoMedio }}</ion-item> -->
+      <ion-list>
+        <ion-item *ngFor="let detalhe of senhasService.senhasAtendidasENaoAtendidas">
+          <ion-label>
+            <h2>Número: {{ detalhe.senha }}</h2>
+            <p>Tipo: {{ detalhe.tipo }}</p>
+            <p>Data de Emissão: {{ detalhe.dataEmissao }}</p>
+            <p>Hora de Emissão: {{ detalhe.horaEmissao }}</p>
+            <p>Data de Atendimento: {{ detalhe.dataAtendimento }}</p>
+            <p>Hora de Atendimento: {{ detalhe.horaAtendimento }}</p>
+            <p>Guichê Responsável: {{ detalhe.guicheResponsavel }}</p>
+          </ion-label>
+        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>

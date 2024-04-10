@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Atendente
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,5 +13,39 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <!-- <app-explore-container name="Tab 2 page"></app-explore-container> -->
+
+  <ion-card>  
+    <ion-card-content class="button">
+      <ion-header>
+        <ion-toolbar>
+          <ion-button expand="block" color="danger" (click)="chamarSenha()">Atender senha em sequência</ion-button>
+          <ion-button expand="block" color="danger" (click)="cancelarSenha()">Atendimento não realizado?</ion-button>
+        </ion-toolbar>
+      </ion-header>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-list-header size="large">Últimas senhas chamadas</ion-list-header>
+          <ion-item *ngFor="let senha of senhasService.senhas">
+            <ion-icon name="{{senha.icon}}" slot="start" color="{{senha.color}}"></ion-icon>
+            <ion-label>{{senha.senha}}<br></ion-label>
+          </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>  
+    <ion-card-content class="button">
+      <ion-header>
+        <ion-toolbar>
+          <ion-button expand="block" color="warning" (click)="reiniciarSistema()">Reiniciar o sistema?</ion-button>
+        </ion-toolbar>
+      </ion-header>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

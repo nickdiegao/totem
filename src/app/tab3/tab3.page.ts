@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SenhasService } from '../services/senhas.service';
 
 @Component({
@@ -6,12 +6,20 @@ import { SenhasService } from '../services/senhas.service';
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
-export class Tab3Page {
+export class Tab3Page implements OnInit {
+  relatorio: any[] = [];
 
-  constructor(public senhasService : SenhasService) {}
+  constructor(public senhasService: SenhasService) {}
 
   gerarMinutosNovos() {
     this.senhasService.gerarMinutosNovos();
   }
-  
+
+  ngOnInit() {
+    this.gerarRelatorio();
+  }
+
+  gerarRelatorio() {
+    this.relatorio = this.senhasService.gerarRelatorioDetalhado(this.senhasService.senhasAtendidasENaoAtendidas);
+  }
 }

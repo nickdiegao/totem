@@ -22,6 +22,4 @@ export class Tab1Page {
   chamarSenhasSG() {
     this.senhasService.senhaSG()
   }
-
-  
 }
