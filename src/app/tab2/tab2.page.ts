@@ -40,7 +40,7 @@ export class Tab2Page {
     hours = hours < 10 ? '0' + hours : hours;
     minutes = minutes < 10 ? '0' + minutes : minutes;
 
-    if (hours > "17") {
+    if (hours >= "17") {
       this.senhasService.senhas = []
       this.senhasService.senhasGeral = 0;
       this.senhasService.senhasPrior = 0;
@@ -54,6 +54,7 @@ export class Tab2Page {
       this.senhasService.senhaSGatendida = 0;
       this.senhasService.contadorDeSenhasAtendidas = 0;
       this.senhasService.senhasAtendidasENaoAtendidas = [];
+      this.senhasService.somaTimeStampMinutos = 0;
     } else {
       if (horasRestantes == 1) {
         if (minutosRestantes == 1) {
