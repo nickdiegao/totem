@@ -30,8 +30,9 @@ export class Tab2Page {
     let dataAtual: Date = new Date();
     let hours: number | string = dataAtual.getHours();
     hours = hours < 10 ? '0' + hours : hours;
+    console.log(hours)
   
-    if (hours >= "17") {
+    if (hours > "17") {
       this.senhasService.senhas = []
       this.senhasService.senhasGeral = 0;
       this.senhasService.senhasPrior = 0;

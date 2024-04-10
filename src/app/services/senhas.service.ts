@@ -23,9 +23,14 @@ export class SenhasService {
   public count2: number = 0;
   public count3: number = 0;
 
+  public somaTimeStampSegundos: number = 0;
+  public somaTimeStampHoras: number = 0;
+  public somaTimeStampMinutos: number = 0;
+
   somaGeral() {this.senhasGeral++; this.senhasTotal++; this.count3++}
   somaPrior() {this.senhasPrior++; this.senhasTotal++; this.count2++}
   somaExame() {this.senhasExame++; this.senhasTotal++; this.count1++}
+
 
   getFormattedDate(): string {
     let currentDate: Date = new Date();
@@ -72,7 +77,10 @@ export class SenhasService {
   gerarNumeroAleatorioPP(): number {
     const min = 1;
     const max = 5;
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    let numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;
+    this.somaTimeStampMinutos += numeroAleatorio;
+    console.log(numeroAleatorio)
+    return numeroAleatorio;
   }
 
   gerarMinutosNovosPP(): string {
@@ -81,6 +89,7 @@ export class SenhasService {
     let minutosAtuais = dataAtual.getMinutes();
     let numeroAleatorio = this.gerarNumeroAleatorioPP();
     let minutosAtualizados = minutosAtuais + numeroAleatorio;
+
     dataAtual.setMinutes(minutosAtualizados);
 
     let day: number | string = dataAtual.getDate();
@@ -101,7 +110,10 @@ export class SenhasService {
   gerarNumeroAleatorioSE(): number {
     const min = 0;
     const max = 1;
-    return Math.random() * (max - min) + min;
+    let numeroAleatorio = Math.random() * (max - min) + min;
+    this.somaTimeStampMinutos += numeroAleatorio
+    console.log(numeroAleatorio)
+    return numeroAleatorio;
   }
 
   gerarMinutosNovosSE(): string {
@@ -110,6 +122,7 @@ export class SenhasService {
     let minutosAtuais = dataAtual.getMinutes();
     let numeroAleatorio = this.gerarNumeroAleatorioSE();
     let minutosAtualizados = minutosAtuais + numeroAleatorio;
+  
     dataAtual.setMinutes(minutosAtualizados);
 
     let day: number | string = dataAtual.getDate();
@@ -129,8 +142,11 @@ export class SenhasService {
 
   gerarNumeroAleatorioSG() {
     const min = 1;
-    const max = 15;
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    const max = 3;
+    let numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;
+    this.somaTimeStampMinutos += numeroAleatorio;
+    console.log(numeroAleatorio)
+    return numeroAleatorio;
   }
 
   gerarMinutosNovosSG(): string {
@@ -139,6 +155,7 @@ export class SenhasService {
     let minutosAtuais = dataAtual.getMinutes();
     let numeroAleatorio = this.gerarNumeroAleatorioSG();
     let minutosAtualizados = minutosAtuais + numeroAleatorio;
+    
     dataAtual.setMinutes(minutosAtualizados);
 
     let day: number | string = dataAtual.getDate();
@@ -187,7 +204,7 @@ export class SenhasService {
         tipo: 'Senha Exame',
         dataEmissao: `${this.getFormattedDate()}`,
         horaEmissao: `${this.getOnlyHours()}`,
-        dataAtendimento: `${this.getFormattedDate()}`,
+        dataAtendimento: `${this.gerarMinutosNovosSE()}`,
         horaAtendimento: `${this.getOnlyHours()}`,
         guicheResponsavel: `${this.guicheResponsavel()}`
     };
@@ -203,7 +220,6 @@ export class SenhasService {
     this.senhasAtendidasENaoAtendidas.push(newSenha);
   }
 
-
   senhaSP() {
     let newSenha = {
       color: 'primary',
@@ -213,7 +229,7 @@ export class SenhasService {
       tipo: 'Senha Prioritária',
       dataEmissao: `${this.getFormattedDate()}`,
       horaEmissao: `${this.getOnlyHours()}`,
-      dataAtendimento: `${this.getFormattedDate()}`,
+      dataAtendimento: `${this.gerarMinutosNovosPP()}`,
       horaAtendimento: `${this.getOnlyHours()}`,    
       guicheResponsavel: `${this.guicheResponsavel()}`
     };
@@ -241,7 +257,7 @@ export class SenhasService {
       tipo: 'Senha Geral',
       dataEmissao: `${this.getFormattedDate()}`,
       horaEmissao: `${this.getOnlyHours()}`,
-      dataAtendimento: `${this.getFormattedDate()}`,
+      dataAtendimento: `${this.gerarMinutosNovosSG()}`,
       horaAtendimento: `${this.getOnlyHours()}`,
       guicheResponsavel: `${this.guicheResponsavel()}`
     };
