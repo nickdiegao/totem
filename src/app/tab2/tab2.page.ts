@@ -52,7 +52,11 @@ export class Tab2Page {
       this.senhasService.contadorDeSenhasAtendidas = 0;
       this.senhasService.senhasAtendidasENaoAtendidas = [];
     } else {
-      alert(`Ainda não é 17h. Faltam ${horasRestantes} horas`)
+      if (horasRestantes == 1) {
+        alert(`Ainda não é 17h. Falta ${horasRestantes} hora`)
+      } else {
+        alert(`Ainda não é 17h. Faltam ${horasRestantes} horas`)
+      }
     }
   }
 
